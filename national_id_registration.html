@@ -4,18 +4,137 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>National ID Registration</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    <style>
+        html {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #f6faff;
+            color: rgb(45, 18, 18);
+            display: flex;
+            flex-direction: column;
+            align-items: center; 
+            padding: 20px;
+        }
+
+        h1 {
+            font-family: 'Urbanist', sans-serif;
+            .text-yellow {
+                color: #FFC000; 
+            }
+
+            .text-blue {
+                color: #1a36c6;
+            }
+
+            .text-red {
+                color: #cc0000; 
+            }
+            font-size: 40px;
+        }
+
+        form, #preview-panel {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        input[type="text"], input[type="date"], input[type="tel"], input[type="email"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-family: 'Outfit', sans-serif;
+            transition: background-color 0.3s ease;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        button {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #displayBtn {
+            background-color: #2b6cb0;
+            color: white;
+        }
+
+        #clearBtn {
+            background-color: #e2e8f0;
+            color: #2d3748;
+        }
+
+        #gender-message {
+            font-size: 13px;
+            color: #d97706;
+            margin-top: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+        }
+
+        #preview-panel {
+            display: none; /* Hidden by default until button is clicked */
+        }
+
+        #preview-panel h2 {
+            font-family: 'Montserrat', sans-serif;
+            margin-top: 0;
+            border-bottom: 2px solid #edf2f7;
+            padding-bottom: 10px;
+        }
+
+        .preview-item {
+            margin-bottom: 10px;
+            font-family: 'Outfit', sans-serif;
+        }
+        
+        .preview-item strong {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        
+    </style>
 </head>
 <body>
     <div class="header">
-        <h1 align="center">National ID Registration</h1>
+        <h1>
+            <span class="text-yellow">#</span><span class="text-blue">National</span><span class="text-red">ID</span> Registration
+        </h1>
     </div>
 
-    <form action="#" method="POST">
-        
-        <fieldset>
-            <legend>1. Personal Information</legend>
+    <form id="registrationForm">
+        <fieldset style="border: 1px solid #cbd5e0; border-radius: 8px; padding: 20px;">
+            <legend style="font-family: 'Open Sans'; font-weight: 600; padding: 0 10px;">1. Personal Information</legend>
 
             <div class="form-group">
                 <label for="firstname">First Name</label><br>
@@ -23,8 +142,9 @@
             </div>
 
             <div class="form-group">
-                <label for="firstname">Middle Name</label><br>
-                <input type="text" id="middlename" name="middlename" placeholder="Enter your middle name" required autofocus maxlength="50">
+                <label for="middlename">Middle Name</label><br>
+                <!-- Corrected the label 'for' attribute to match the ID -->
+                <input type="text" id="middlename" name="middlename" placeholder="Enter your middle name" required maxlength="50">
             </div>
             
             <div class="form-group">
@@ -33,11 +153,10 @@
             </div>
 
             <div class="form-group">
-                <label for="start-date">Date of Birth</label>
+                <label for="birthday">Date of Birth</label>
+                <!-- Corrected the label 'for' attribute to match the ID -->
                 <input type="date" id="birthday" name="birthday">
             </div>
-
-            <br>
 
             <div class="form-group">
                 <label>Gender</label><br>
@@ -46,10 +165,14 @@
                 
                 <input type="radio" id="female" name="gender" value="Female">
                 <label for="female" style="font-weight:normal;">Female</label>
+                
+                <!-- Container for the change event message -->
+                <div id="gender-message">Selected Gender: Male</div>
             </div>
 
             <div class="form-group">
-                <label for="phone">Address</label><br>
+                <label for="address">Address</label><br>
+                <!-- Corrected the label 'for' attribute to match the ID -->
                 <input type="text" id="address" name="address" placeholder="Enter your complete address">
             </div>
 
@@ -58,22 +181,15 @@
                 <input type="tel" id="phone" name="phone" placeholder="09XX XXX XXXX">
             </div>
 
-            <br>
-
             <div class="form-group">
                 <label for="email">Email Address</label><br>
                 <input type="email" id="email" name="email" placeholder="your@email.com" required>
-                <span class="email-suffix">@gmail.com</span>
             </div>
-
-            <br>
-
-
         </fieldset>
 
-        <div class="button-group" align="center">
-            <input type="submit" value="Submit Registration">
-            <input type="reset" value="Clear Form">
+        <div class="button-group">
+            <button type="button" id="displayBtn">Display Information</button>
+            <button type="button" id="clearBtn">Clear Form</button>
         </div>
     </form>
 </body>

@@ -52,7 +52,7 @@
         }
 
         .form-group label {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Open Sans', sans-serif;
             font-weight: 500;
             font-size: 14px;
         }
@@ -75,7 +75,7 @@
         }
 
         button {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Open Sans', sans-serif;
             font-weight: 600;
             padding: 10px 20px;
             border: none;
@@ -98,16 +98,16 @@
             font-size: 13px;
             color: #d97706;
             margin-top: 8px;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Open Sans', sans-serif;
             font-weight: 500;
         }
 
         #preview-panel {
-            display: none; /* Hidden by default until button is clicked */
+            display: none; 
         }
 
         #preview-panel h2 {
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Open Sans', sans-serif;
             margin-top: 0;
             border-bottom: 2px solid #edf2f7;
             padding-bottom: 10px;
@@ -119,7 +119,7 @@
         }
         
         .preview-item strong {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Open Sans', sans-serif;
         }
 
         
@@ -143,7 +143,6 @@
 
             <div class="form-group">
                 <label for="middlename">Middle Name</label><br>
-                <!-- Corrected the label 'for' attribute to match the ID -->
                 <input type="text" id="middlename" name="middlename" placeholder="Enter your middle name" required maxlength="50">
             </div>
             
@@ -154,7 +153,6 @@
 
             <div class="form-group">
                 <label for="birthday">Date of Birth</label>
-                <!-- Corrected the label 'for' attribute to match the ID -->
                 <input type="date" id="birthday" name="birthday">
             </div>
 
@@ -166,13 +164,11 @@
                 <input type="radio" id="female" name="gender" value="Female">
                 <label for="female" style="font-weight:normal;">Female</label>
                 
-                <!-- Container for the change event message -->
                 <div id="gender-message">Selected Gender: Male</div>
             </div>
 
             <div class="form-group">
                 <label for="address">Address</label><br>
-                <!-- Corrected the label 'for' attribute to match the ID -->
                 <input type="text" id="address" name="address" placeholder="Enter your complete address">
             </div>
 
@@ -192,5 +188,108 @@
             <button type="button" id="clearBtn">Clear Form</button>
         </div>
     </form>
+
+    <div id="preview-panel">
+        <h2>Registration Preview</h2>
+        <div class="preview-item"><strong>Full Name:</strong> <span id="prev-fullname"></span></div>
+        <div class="preview-item"><strong>Date of Birth:</strong> <span id="prev-dob"></span></div>
+        <div class="preview-item"><strong>Gender:</strong> <span id="prev-gender"></span></div>
+        <div class="preview-item"><strong>Address:</strong> <span id="prev-address"></span></div>
+        <div class="preview-item"><strong>Phone Number:</strong> <span id="prev-phone"></span></div>
+        <div class="preview-item"><strong>Email Address:</strong> <span id="prev-email"></span></div>
+    </div>
+
+    <script>
+        const displayBtn = document.getElementById('displayBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const previewPanel = document.getElementById('preview-panel');
+        const registrationForm = document.getElementById('registrationForm');
+
+        const textInputs = document.querySelectorAll('input[type="text"], input[type="date"], input[type="tel"], input[type="email"]');
+        const genderRadios = document.querySelectorAll('input[name="gender"]');
+        const genderMessage = document.getElementById('gender-message');
+
+        displayBtn.addEventListener('click', function() {
+            const fName = document.getElementById('firstname').value;
+            const mName = document.getElementById('middlename').value;
+            const lName = document.getElementById('lastname').value;
+            const dob = document.getElementById('birthday').value;
+            const add = document.getElementById('address').value;
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
+
+            let selectedGender = 'Male';
+                genderRadios.forEach(radio => {
+                    if (radio.checked)
+                        selectedGender = radio.value;
+                });
+                
+        document.getElementById('prev-fullname').textContent = `${fName} ${mName} ${lName}`.trim();
+            document.getElementById('prev-dob').textContent = dob;
+            document.getElementById('prev-gender').textContent = selectedGender;
+            document.getElementById('prev-address').textContent = address;
+            document.getElementById('prev-phone').textContent = phone;
+            document.getElementById('prev-email').textContent = email;
+
+        previewPanel.style.display = 'block';
+
+        alert('Registration Successful!');
+        });
+
+        
+
+        // 1. click Event (Clear Form)
+        clearBtn.addEventListener('click', function() {
+            // Clear all input fields in the form
+            registrationForm.reset();
+
+            // Clear preview text content
+            document.getElementById('prev-fullname').textContent = '';
+            document.getElementById('prev-dob').textContent = '';
+            document.getElementById('prev-gender').textContent = '';
+            document.getElementById('prev-address').textContent = '';
+            document.getElementById('prev-phone').textContent = '';
+            document.getElementById('prev-email').textContent = '';
+
+            // Hide the preview panel again
+            previewPanel.style.display = 'none';
+
+            // Reset the gender message
+            genderMessage.textContent = 'Selected Gender: Male';
+        });
+
+        // 2. focus Event (and blur event to revert it)
+        textInputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                // Change background color to indicate it is active
+                this.style.backgroundColor = '#ebf8ff'; 
+                this.style.borderColor = '#3182ce';
+            });
+            
+            input.addEventListener('blur', function() {
+                // Revert to original appearance
+                this.style.backgroundColor = 'white';
+                this.style.borderColor = '#ccc';
+            });
+        });
+
+        // 3. change Event (Gender selection)
+        genderRadios.forEach(radio => {
+            radio.addEventListener('change', function() {
+                genderMessage.textContent = `Selected Gender: ${this.value}`;
+            });
+        });
+
+        // 4. mouseover Event
+        displayBtn.addEventListener('mouseover', function() {
+            this.style.backgroundColor = '#2c5282'; // Darker blue on hover
+        });
+
+        // 5. mouseout Event
+        displayBtn.addEventListener('mouseout', function() {
+            this.style.backgroundColor = '#2b6cb0'; // Restore original blue
+        });
+    </script>
+    </script>
 </body>
 </html>

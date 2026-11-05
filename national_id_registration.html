@@ -6,6 +6,7 @@
     <title>National ID Registration</title>
     <link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" sizes="180x180" href="download.png">
     <style>
         html {
             box-sizing: border-box;
@@ -65,7 +66,8 @@
             border-radius: 6px;
             font-family: 'Outfit', sans-serif;
             transition: background-color 0.3s ease;
-        }
+            box-sizing: border-box; 
+}
 
         .button-group {
             display: flex;
@@ -134,21 +136,21 @@
 
     <form id="registrationForm">
         <fieldset style="border: 1px solid #cbd5e0; border-radius: 8px; padding: 20px;">
-            <legend style="font-family: 'Open Sans'; font-weight: 600; padding: 0 10px;">1. Personal Information</legend>
+            <legend style="font-family: 'Open Sans'; font-weight: 600; padding: 0 10px;">Personal Information</legend>
 
             <div class="form-group">
                 <label for="firstname">First Name</label><br>
-                <input type="text" id="firstname" name="firstname" placeholder="Enter your first name" required autofocus maxlength="50">
+                <input type="text" id="firstname" name="firstname" placeholder="Enter First Name" required autofocus maxlength="50">
             </div>
 
             <div class="form-group">
                 <label for="middlename">Middle Name</label><br>
-                <input type="text" id="middlename" name="middlename" placeholder="Enter your middle name" required maxlength="50">
+                <input type="text" id="middlename" name="middlename" placeholder="Enter Middle Name" required maxlength="50">
             </div>
             
             <div class="form-group">
                 <label for="lastname">Last Name</label><br>
-                <input type="text" id="lastname" name="lastname" placeholder="Enter your last name" required maxlength="50">
+                <input type="text" id="lastname" name="lastname" placeholder="Enter Last Name" required maxlength="50">
             </div>
 
             <div class="form-group">
@@ -191,12 +193,30 @@
 
     <div id="preview-panel">
         <h2>Registration Preview</h2>
-        <div class="preview-item"><strong>Full Name:</strong> <span id="prev-fullname"></span></div>
-        <div class="preview-item"><strong>Date of Birth:</strong> <span id="prev-dob"></span></div>
-        <div class="preview-item"><strong>Gender:</strong> <span id="prev-gender"></span></div>
-        <div class="preview-item"><strong>Address:</strong> <span id="prev-address"></span></div>
-        <div class="preview-item"><strong>Phone Number:</strong> <span id="prev-phone"></span></div>
-        <div class="preview-item"><strong>Email Address:</strong> <span id="prev-email"></span></div>
+
+        <div class="preview-item">
+            <strong>Full Name:</strong> <span id="prev-fullname"></span>
+        </div>
+
+        <div class="preview-item">
+            <strong>Date of Birth:</strong> <span id="prev-dob"></span>
+        </div>
+
+        <div class="preview-item">
+            <strong>Gender:</strong> <span id="prev-gender"></span>
+        </div>
+
+        <div class="preview-item">
+            <strong>Address:</strong> <span id="prev-address"></span>
+        </div>
+
+        <div class="preview-item">
+            <strong>Phone Number:</strong> <span id="prev-phone"></span>
+        </div>
+
+        <div class="preview-item">
+            <strong>Email Address:</strong> <span id="prev-email"></span>
+        </div>
     </div>
 
     <script>
@@ -208,13 +228,19 @@
         const textInputs = document.querySelectorAll('input[type="text"], input[type="date"], input[type="tel"], input[type="email"]');
         const genderRadios = document.querySelectorAll('input[name="gender"]');
         const genderMessage = document.getElementById('gender-message');
-
+        
         displayBtn.addEventListener('click', function() {
+            // ADD THIS VALIDATION BLOCK FIRST
+            if (!registrationForm.checkValidity()) {
+                registrationForm.reportValidity(); // Shows the "Please fill out this field" tooltips
+                return; // Stops the script here if fields are empty
+            }
+        
             const fName = document.getElementById('firstname').value;
             const mName = document.getElementById('middlename').value;
             const lName = document.getElementById('lastname').value;
             const dob = document.getElementById('birthday').value;
-            const add = document.getElementById('address').value;
+            const address = document.getElementById('address').value;
             const phone = document.getElementById('phone').value;
             const email = document.getElementById('email').value;
 
@@ -236,14 +262,11 @@
         alert('Registration Successful!');
         });
 
-        
-
-        // 1. click Event (Clear Form)
+        // Clear Form
         clearBtn.addEventListener('click', function() {
-            // Clear all input fields in the form
-            registrationForm.reset();
+            registrationForm.reset(); // Clear all
 
-            // Clear preview text content
+            // Clear preview text 
             document.getElementById('prev-fullname').textContent = '';
             document.getElementById('prev-dob').textContent = '';
             document.getElementById('prev-gender').textContent = '';
@@ -254,42 +277,35 @@
             // Hide the preview panel again
             previewPanel.style.display = 'none';
 
-            // Reset the gender message
+            // Reset gender message
             genderMessage.textContent = 'Selected Gender: Male';
         });
 
-        // 2. focus Event (and blur event to revert it)
         textInputs.forEach(input => {
             input.addEventListener('focus', function() {
-                // Change background color to indicate it is active
                 this.style.backgroundColor = '#ebf8ff'; 
                 this.style.borderColor = '#3182ce';
             });
             
             input.addEventListener('blur', function() {
-                // Revert to original appearance
                 this.style.backgroundColor = 'white';
                 this.style.borderColor = '#ccc';
             });
         });
 
-        // 3. change Event (Gender selection)
         genderRadios.forEach(radio => {
             radio.addEventListener('change', function() {
                 genderMessage.textContent = `Selected Gender: ${this.value}`;
             });
         });
 
-        // 4. mouseover Event
         displayBtn.addEventListener('mouseover', function() {
-            this.style.backgroundColor = '#2c5282'; // Darker blue on hover
+            this.style.backgroundColor = '#2c5282';
         });
 
-        // 5. mouseout Event
         displayBtn.addEventListener('mouseout', function() {
-            this.style.backgroundColor = '#2b6cb0'; // Restore original blue
+            this.style.backgroundColor = '#2b6cb0'; 
         });
-    </script>
     </script>
 </body>
 </html>

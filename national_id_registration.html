@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>National ID Registration</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="header">
+        <h1 align="center">National ID Registration</h1>
+    </div>
+
+    <form action="#" method="POST">
+        
+        <fieldset>
+            <legend>1. Personal Information</legend>
+
+            <div class="form-group">
+                <label for="firstname">First Name</label><br>
+                <input type="text" id="firstname" name="firstname" placeholder="Enter your first name" required autofocus maxlength="50">
+            </div>
+
+            <div class="form-group">
+                <label for="firstname">Middle Name</label><br>
+                <input type="text" id="middlename" name="middlename" placeholder="Enter your middle name" required autofocus maxlength="50">
+            </div>
+            
+            <div class="form-group">
+                <label for="lastname">Last Name</label><br>
+                <input type="text" id="lastname" name="lastname" placeholder="Enter your last name" required maxlength="50">
+            </div>
+
+            <div class="form-group">
+                <label for="start-date">Date of Birth</label>
+                <input type="date" id="birthday" name="birthday">
+            </div>
+
+            <br>
+
+            <div class="form-group">
+                <label>Gender</label><br>
+                <input type="radio" id="male" name="gender" value="Male" checked>
+                <label for="male" style="font-weight:normal;">Male</label>
+                
+                <input type="radio" id="female" name="gender" value="Female">
+                <label for="female" style="font-weight:normal;">Female</label>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Address</label><br>
+                <input type="text" id="address" name="address" placeholder="Enter your complete address">
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number</label><br>
+                <input type="tel" id="phone" name="phone" placeholder="09XX XXX XXXX">
+            </div>
+
+            <br>
+
+            <div class="form-group">
+                <label for="email">Email Address</label><br>
+                <input type="email" id="email" name="email" placeholder="your@email.com" required>
+                <span class="email-suffix">@gmail.com</span>
+            </div>
+
+            <br>
+
+
+        </fieldset>
+
+        <div class="button-group" align="center">
+            <input type="submit" value="Submit Registration">
+            <input type="reset" value="Clear Form">
+        </div>
+    </form>
+</body>
+</html>

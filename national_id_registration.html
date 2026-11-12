@@ -24,19 +24,12 @@
 
         h1 {
             font-family: 'Urbanist', sans-serif;
-            .text-yellow {
-                color: #FFC000; 
-            }
-
-            .text-blue {
-                color: #1a36c6;
-            }
-
-            .text-red {
-                color: #cc0000; 
-            }
             font-size: 40px;
         }
+        
+        .text-yellow { color: #FFC000; }
+        .text-blue { color: #1a36c6; }
+        .text-red { color: #cc0000; }
 
         form, #preview-panel {
             background-color: white;
@@ -63,7 +56,6 @@
         input[type="tel"], 
         input[type="email"], 
         input[type="password"] {
-
             width: 100%;
             padding: 8px;
             margin-top: 5px;
@@ -81,7 +73,6 @@
             font-weight: 600;
             display: block;
         }
-
 
         .button-group {
             display: flex;
@@ -137,8 +128,6 @@
         .preview-item strong {
             font-family: 'Open Sans', sans-serif;
         }
-
-        
     </style>
 </head>
 <body>
@@ -148,28 +137,34 @@
         </h1>
     </div>
 
-    <form id="registrationForm">
+    <!-- Added novalidate to prevent browser defaults conflicting with custom JS -->
+    <form id="registrationForm" novalidate>
         <fieldset style="border: 1px solid #cbd5e0; border-radius: 8px; padding: 20px;">
             <legend style="font-family: 'Open Sans'; font-weight: 600; padding: 0 10px;">Personal Information</legend>
 
+            <!-- Added error spans below each input -->
             <div class="form-group">
                 <label for="firstname">First Name</label><br>
                 <input type="text" id="firstname" name="firstname" placeholder="Enter First Name" required autofocus maxlength="50">
+                <span class="error-message" id="error-firstname"></span>
             </div>
 
             <div class="form-group">
-                <label for="middlename">Middle Name</label><br>
+                <label for="middlename">Middle Name (Optional)</label><br>
                 <input type="text" id="middlename" name="middlename" placeholder="Enter Middle Name" maxlength="50">
+                <span class="error-message" id="error-middlename"></span>
             </div>
             
             <div class="form-group">
                 <label for="lastname">Last Name</label><br>
                 <input type="text" id="lastname" name="lastname" placeholder="Enter Last Name" required maxlength="50">
+                <span class="error-message" id="error-lastname"></span>
             </div>
 
             <div class="form-group">
                 <label for="birthday">Date of Birth</label>
                 <input type="date" id="birthday" name="birthday" required>
+                <span class="error-message" id="error-birthday"></span>
             </div>
 
             <div class="form-group">
@@ -180,29 +175,33 @@
                 <input type="radio" id="female" name="gender" value="Female">
                 <label for="female" style="font-weight:normal;">Female</label>
                 
+                <span class="error-message" id="error-gender"></span>
                 <div id="gender-message">Selected Gender: Male</div>
             </div>
 
             <div class="form-group">
                 <label for="address">Address</label><br>
                 <input type="text" id="address" name="address" placeholder="Enter your complete address" required>
+                <span class="error-message" id="error-address"></span>
             </div>
 
             <div class="form-group">
                 <label for="phone">Phone Number</label><br>
                 <input type="tel" id="phone" name="phone" placeholder="09XX XXX XXXX" required>
+                <span class="error-message" id="error-phone"></span>
             </div>
 
             <div class="form-group">
                 <label for="email">Email Address</label><br>
                 <input type="email" id="email" name="email" placeholder="your@email.com" required>
+                <span class="error-message" id="error-email"></span>
             </div>
 
             <div class="form-group">
-                <label for="pass">Password</label><br>
+                <label for="password">Password</label><br>
                 <input type="password" id="password" name="password" placeholder="Password" required>
+                <span class="error-message" id="error-password"></span>
             </div>
-
 
         </fieldset>
 
@@ -214,30 +213,12 @@
 
     <div id="preview-panel">
         <h2>Registration Preview</h2>
-
-        <div class="preview-item">
-            <strong>Full Name:</strong> <span id="prev-fullname"></span>
-        </div>
-
-        <div class="preview-item">
-            <strong>Date of Birth:</strong> <span id="prev-dob"></span>
-        </div>
-
-        <div class="preview-item">
-            <strong>Gender:</strong> <span id="prev-gender"></span>
-        </div>
-
-        <div class="preview-item">
-            <strong>Address:</strong> <span id="prev-address"></span>
-        </div>
-
-        <div class="preview-item">
-            <strong>Phone Number:</strong> <span id="prev-phone"></span>
-        </div>
-
-        <div class="preview-item">
-            <strong>Email Address:</strong> <span id="prev-email"></span>
-        </div>
+        <div class="preview-item"><strong>Full Name:</strong> <span id="prev-fullname"></span></div>
+        <div class="preview-item"><strong>Date of Birth:</strong> <span id="prev-dob"></span></div>
+        <div class="preview-item"><strong>Gender:</strong> <span id="prev-gender"></span></div>
+        <div class="preview-item"><strong>Address:</strong> <span id="prev-address"></span></div>
+        <div class="preview-item"><strong>Phone Number:</strong> <span id="prev-phone"></span></div>
+        <div class="preview-item"><strong>Email Address:</strong> <span id="prev-email"></span></div>
     </div>
 
     <script>
@@ -246,11 +227,13 @@
         const previewPanel = document.getElementById('preview-panel');
         const registrationForm = document.getElementById('registrationForm');
 
-        const textInputs = document.querySelectorAll('input[type="text"], input[type="date"], input[type="tel"], input[type="email"]');
+        // Consolidated and fixed element selectors
+        const textInputs = document.querySelectorAll('input[type="text"], input[type="date"], input[type="tel"], input[type="email"], input[type="password"]');
+        const inputs = document.querySelectorAll('input'); 
         const genderRadios = document.querySelectorAll('input[name="gender"]');
         const genderMessage = document.getElementById('gender-message');
 
-        const nameRegex = /^[A-Za-z]+$/;
+        const nameRegex = /^[A-Za-z]+( [A-Za-z]+)*$/;
         const phoneRegex = /^09\d{9}$/;
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+={}\[\]|\\:;"'<>,.?/-]).{8,}$/;
@@ -268,80 +251,180 @@
                 inputEl.style.backgroundColor = 'white';
             }
         }
+
+        function calculateAge(dobString) {
+            const today = new Date();
+            const birthDate = new Date(dobString);
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+            
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            return age;
+        }
         
         displayBtn.addEventListener('click', function() {
-            if (!registrationForm.checkValidity()) {
-                registrationForm.reportValidity(); 
-                return;
-            }
-        
+            let isValid = true;
+            
             const fName = document.getElementById('firstname').value;
+            if (!fName){
+                setError('firstname', 'First Name is required.');
+                isValid = false;
+            } else if (!nameRegex.test(fName)){
+                setError('firstname', 'First Name must contain letters only (no spaces).');
+                isValid = false;
+            } else {
+                setError('firstname','', false);
+            }
+            
             const mName = document.getElementById('middlename').value;
+            if (mName && !nameRegex.test(mName)){
+                setError('middlename', 'Middle name must contain letters only (no spaces).');
+                isValid = false;
+            } else {
+                setError('middlename', '', false);
+            }
+
             const lName = document.getElementById('lastname').value;
+            if (!lName){
+                setError('lastname', 'Last Name is required.');
+                isValid = false;
+            } else if (!nameRegex.test(lName)){
+                setError('lastname', 'Last name must contain letters only (no spaces).');
+                isValid = false;
+            } else { 
+                setError('lastname', '', false);
+            }
+
             const dob = document.getElementById('birthday').value;
+            if (!dob){
+                setError('birthday', 'Date of Birth is required.');
+                isValid = false;
+            } else {
+                // Fixed typo: calculateAg -> calculateAge
+                const age = calculateAge(dob); 
+                if (age < 18){
+                    setError('birthday', 'You must be at least 18 years old.');
+                    isValid = false;
+                } else {
+                    setError('birthday', '', false);
+                }
+            }
+
+            let selectedGender = null;
+            genderRadios.forEach(radio => {
+                if (radio.checked)
+                    selectedGender = radio.value;
+            });
+            if (!selectedGender){
+                document.getElementById('error-gender').textContent = 'Please select a gender.';
+                isValid = false;
+            } else {
+                document.getElementById('error-gender').textContent = '';
+            }
+
             const address = document.getElementById('address').value;
+            if (!address || address.trim().length < 5){
+                setError('address', 'Address must be at least 5 characters.');
+                isValid = false;
+            } else {
+                setError('address', '', false);
+            }
+
             const phone = document.getElementById('phone').value;
+            if (!phoneRegex.test(phone)){
+                setError('phone', 'Phone Number must start with 09 and contain exactly 11 digits.');
+                isValid = false;
+            } else {
+                setError('phone', '', false);
+            }
+
             const email = document.getElementById('email').value;
+            if (!emailRegex.test(email)){
+                setError('email', 'Please enter a valid email address.');
+                isValid = false;
+            } else {
+                setError('email', '', false);
+            }
 
-            let selectedGender = 'Male';
-                genderRadios.forEach(radio => {
-                    if (radio.checked)
-                        selectedGender = radio.value;
-                });
-                
-        document.getElementById('prev-fullname').textContent = `${fName} ${mName} ${lName}`.trim();
-            document.getElementById('prev-dob').textContent = dob;
-            document.getElementById('prev-gender').textContent = selectedGender;
-            document.getElementById('prev-address').textContent = address;
-            document.getElementById('prev-phone').textContent = phone;
-            document.getElementById('prev-email').textContent = email;
+            const password = document.getElementById('password').value;
+            if (!passwordRegex.test(password)){
+                setError('password', 'Password must have at least 8 characters, including an uppercase letter, lowercase letter, number, and special character.');
+                isValid = false;
+            } else {
+                setError('password', '', false);
+            }
 
-        previewPanel.style.display = 'block';
+            if (isValid) {
+                // Added ternary to handle spacing cleanly if there's no middle name
+                document.getElementById('prev-fullname').textContent = `${fName} ${mName ? mName + ' ' : ''}${lName}`.trim();
+                document.getElementById('prev-dob').textContent = dob;
+                document.getElementById('prev-gender').textContent = selectedGender;
+                document.getElementById('prev-address').textContent = address;
+                document.getElementById('prev-phone').textContent = phone;
+                document.getElementById('prev-email').textContent = email;
 
-        alert('Registration Successful!');
+                previewPanel.style.display = 'block';
+                setTimeout(() => alert('Registration Successful!'), 10);
+            } else {
+                previewPanel.style.display = 'none';
+            }
         });
 
-        // Clear Form
+        // Clear error styling dynamically when typing
+        inputs.forEach(input => {
+            input.addEventListener('input', function() {
+                if (this.type !== 'radio' && this.id) {
+                    setError(this.id, '', false);
+                }
+            });
+        });
+
         clearBtn.addEventListener('click', function() {
-            registrationForm.reset(); // Clear all
-
-            // Clear preview text 
-            document.getElementById('prev-fullname').textContent = '';
-            document.getElementById('prev-dob').textContent = '';
-            document.getElementById('prev-gender').textContent = '';
-            document.getElementById('prev-address').textContent = '';
-            document.getElementById('prev-phone').textContent = '';
-            document.getElementById('prev-email').textContent = '';
-
-            // Hide preview panel
+            registrationForm.reset();
+            
+            inputs.forEach(input => {
+                if (input.type !== 'radio' && input.id) {
+                    setError(input.id, '', false);
+                }
+            });
+            document.getElementById('error-gender').textContent = '';
+            
+            document.querySelectorAll('.preview-item span').forEach(span => span.textContent = '');
             previewPanel.style.display = 'none';
-
-            // Reset
+            
             genderMessage.textContent = 'Selected Gender: Male';
         });
 
         textInputs.forEach(input => {
             input.addEventListener('focus', function() {
-                this.style.backgroundColor = '#ebf8ff'; 
-                this.style.borderColor = '#3182ce';
+                if (this.style.borderColor !== 'rgb(204, 0, 0)' && this.style.borderColor !== '#cc0000') {
+                    this.style.backgroundColor = '#ebf8ff'; 
+                    this.style.borderColor = '#3182ce';
+                }
             });
             
             input.addEventListener('blur', function() {
-                this.style.backgroundColor = 'white';
-                this.style.borderColor = '#ccc';
+                if (this.style.borderColor !== 'rgb(204, 0, 0)' && this.style.borderColor !== '#cc0000') {
+                    this.style.backgroundColor = 'white';
+                    this.style.borderColor = '#ccc';
+                }
             });
         });
 
+        // Event Handling: Change event for gender radios
         genderRadios.forEach(radio => {
             radio.addEventListener('change', function() {
                 genderMessage.textContent = `Selected Gender: ${this.value}`;
+                document.getElementById('error-gender').textContent = '';
             });
         });
 
+        // Event Handling: Mouseover / Mouseout for Display Button
         displayBtn.addEventListener('mouseover', function() {
             this.style.backgroundColor = '#2c5282';
         });
-
         displayBtn.addEventListener('mouseout', function() {
             this.style.backgroundColor = '#2b6cb0'; 
         });

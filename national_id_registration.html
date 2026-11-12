@@ -58,7 +58,12 @@
             font-size: 14px;
         }
 
-        input[type="text"], input[type="date"], input[type="tel"], input[type="email"] {
+        input[type="text"],
+        input[type="date"], 
+        input[type="tel"], 
+        input[type="email"], 
+        input[type="password"] {
+
             width: 100%;
             padding: 8px;
             margin-top: 5px;
@@ -67,7 +72,16 @@
             font-family: 'Outfit', sans-serif;
             transition: background-color 0.3s ease;
             box-sizing: border-box; 
-}
+        }
+
+        .error-message {
+            color: #cc0000;
+            font-size: 12px;
+            margin-top: 4px;
+            font-weight: 600;
+            display: block;
+        }
+
 
         .button-group {
             display: flex;
@@ -145,7 +159,7 @@
 
             <div class="form-group">
                 <label for="middlename">Middle Name</label><br>
-                <input type="text" id="middlename" name="middlename" placeholder="Enter Middle Name" required maxlength="50">
+                <input type="text" id="middlename" name="middlename" placeholder="Enter Middle Name" maxlength="50">
             </div>
             
             <div class="form-group">
@@ -155,7 +169,7 @@
 
             <div class="form-group">
                 <label for="birthday">Date of Birth</label>
-                <input type="date" id="birthday" name="birthday">
+                <input type="date" id="birthday" name="birthday" required>
             </div>
 
             <div class="form-group">
@@ -171,18 +185,25 @@
 
             <div class="form-group">
                 <label for="address">Address</label><br>
-                <input type="text" id="address" name="address" placeholder="Enter your complete address">
+                <input type="text" id="address" name="address" placeholder="Enter your complete address" required>
             </div>
 
             <div class="form-group">
                 <label for="phone">Phone Number</label><br>
-                <input type="tel" id="phone" name="phone" placeholder="09XX XXX XXXX">
+                <input type="tel" id="phone" name="phone" placeholder="09XX XXX XXXX" required>
             </div>
 
             <div class="form-group">
                 <label for="email">Email Address</label><br>
                 <input type="email" id="email" name="email" placeholder="your@email.com" required>
             </div>
+
+            <div class="form-group">
+                <label for="pass">Password</label><br>
+                <input type="password" id="password" name="password" placeholder="Password" required>
+            </div>
+
+
         </fieldset>
 
         <div class="button-group">
@@ -228,12 +249,30 @@
         const textInputs = document.querySelectorAll('input[type="text"], input[type="date"], input[type="tel"], input[type="email"]');
         const genderRadios = document.querySelectorAll('input[name="gender"]');
         const genderMessage = document.getElementById('gender-message');
+
+        const nameRegex = /^[A-Za-z]+$/;
+        const phoneRegex = /^09\d{9}$/;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+={}\[\]|\\:;"'<>,.?/-]).{8,}$/;
+
+        function setError(id, message, isError = true) {
+            const inputEl = document.getElementById(id);
+            const errorEl = document.getElementById(`error-${id}`);
+            if (isError) {
+                errorEl.textContent = message;
+                inputEl.style.borderColor = '#cc0000';
+                inputEl.style.backgroundColor = '#fff0f0';
+            } else {
+                errorEl.textContent = '';
+                inputEl.style.borderColor = '#ccc';
+                inputEl.style.backgroundColor = 'white';
+            }
+        }
         
         displayBtn.addEventListener('click', function() {
-            // ADD THIS VALIDATION BLOCK FIRST
             if (!registrationForm.checkValidity()) {
-                registrationForm.reportValidity(); // Shows the "Please fill out this field" tooltips
-                return; // Stops the script here if fields are empty
+                registrationForm.reportValidity(); 
+                return;
             }
         
             const fName = document.getElementById('firstname').value;
@@ -274,10 +313,10 @@
             document.getElementById('prev-phone').textContent = '';
             document.getElementById('prev-email').textContent = '';
 
-            // Hide the preview panel again
+            // Hide preview panel
             previewPanel.style.display = 'none';
 
-            // Reset gender message
+            // Reset
             genderMessage.textContent = 'Selected Gender: Male';
         });
 
